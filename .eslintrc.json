@@ -1,0 +1,26 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "google"
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "rules": {
+        "object-curly-spacing": "Off",
+        "indent": [
+            "error",
+            4
+        ],
+        "quotes": "Off",
+        "max-len": "Off",
+        "require-jsdoc": "Off",
+        "eol-last": "Off",
+        "padded-blocks": "Off",
+        "comma-dangle": "Off"
+    }
+}

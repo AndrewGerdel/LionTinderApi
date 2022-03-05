@@ -1,0 +1,493 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a simple example NodeJS API project for lion tinder",
+        "version": "1.0.0",
+        "title": "Lion Tinder",
+        "contact": {
+            "email": "DoNot@EmailMe.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "schemes": ["http"],
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "paths" : {
+        "/health" : {
+            "get" : {
+                "summary" : "Basic Health Check",
+                "description": "Checks the health of the API",
+                "produces": ["application/json"],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "500": {
+                        "description": "healthcheck failure"
+                    }
+                }
+            }
+        },
+        "/createUser" : {
+            "post" : {
+                "summary" : "Creates a user record",
+                "description": "Creates a user record",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "user" : {
+                                    "type": "object",
+                                    "$ref": "#/definitions/User"
+                                } 
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "failure"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/login" : {
+            "post" : {
+                "summary" : "Finds a user record by username and password",
+                "description": "Finds a user record by username and password",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "user" : {
+                                    "type": "object",
+                                    "$ref": "#/definitions/User"
+                                } 
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "login successful"
+                    },
+                    "400": {
+                        "description": "missing username/password"
+                    },
+                    "401": {
+                        "description": "login failure"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/validateToken" : {
+            "get" : {
+                "summary" : "Validates the supplied JWT returned by login",
+                "description": "Validates the supplied JWT returned by login",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "JWT security token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    },
+                    "403": {
+                        "description": "missing token"
+                    }
+                }
+            }
+        },
+        "/uploadImage" : {
+            "put" : {
+                "summary" : "Uploads an image (of lions only, please!)",
+                "produces": ["application/json"],
+                "consumes": ["multipart/form-data"],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "uploadedImage",
+                        "type": "file",
+                        "description": "The file to upload",
+                        "required": true
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "JWT security token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "The name of the lion (yes, lions can have names.)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "Describe the lion.  Personality, physical characteristics.  Go crazy.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "login successful"
+                    },
+                    "400": {
+                        "description": "login failure"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    },
+                    "403": {
+                        "description": "missing token"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/uploadImageByUrl" : {
+            "put" : {
+                "summary" : "Uploads an image by URL (of lions only, please!)",
+                "produces": ["application/json"],
+                "consumes": ["multipart/form-data"],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "JWT security token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "imageUrl",
+                        "description": "The URL of the image. It will be downloaded locally.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "name",
+                        "description": "The name of the lion (yes, lions can have names.)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "description",
+                        "description": "Describe the lion.  Personality, physical characteristics.  Go crazy.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "login successful"
+                    },
+                    "400": {
+                        "description": "login failure"
+                    },
+                    "401": {
+                        "description": "Invalid token"
+                    },
+                    "403": {
+                        "description": "missing token"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/getImage" : {
+            "get" : {
+                "summary" : "Gets an image by hash",
+                "description": "",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "hash",
+                        "type": "string",
+                        "description": "The hash of the record to retrieve",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/getLikedImages" : {
+            "get" : {
+                "summary" : "Gets all images that have been liked by a user",
+                "description": "",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "JWT security token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "invalid token"
+                    },
+                    "403": {
+                        "description": "missing token"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/getDislikedImages" : {
+            "get" : {
+                "summary" : "Gets all images that have been disliked by a user",
+                "description": "",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "JWT security token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "invalid token"
+                    },
+                    "403": {
+                        "description": "missing token"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/getNewImages" : {
+            "get" : {
+                "summary" : "Gets all images that have not been liked or disliked by a user",
+                "description": "",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "JWT security token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "401": {
+                        "description": "invalid token"
+                    },
+                    "403": {
+                        "description": "missing token"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/saveUserImageLike" : {
+            "post" : {
+                "summary" : "Saves a record indicating a user liked an image",
+                "description": "Saves a record indicating a user liked an image",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "JWT security token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "userImageLike" : {
+                                    "type": "object",
+                                    "$ref": "#/definitions/UserImageLike"
+                                } 
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "operation successful"
+                    },
+                    "400": {
+                        "description": "missing file hash"
+                    },
+                    "401": {
+                        "description": "invalid token"
+                    },
+                    "403": {
+                        "description": "missing token"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        },
+        "/saveUserImageDislike" : {
+            "post" : {
+                "summary" : "Saves a record indicating a user disliked an image",
+                "description": "Saves a record indicating a user disliked an image",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-access-token",
+                        "description": "JWT security token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "userImageDislike" : {
+                                    "type": "object",
+                                    "$ref": "#/definitions/UserImageDislike"
+                                } 
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "operation successful"
+                    },
+                    "400": {
+                        "description": "missing file hash"
+                    },
+                    "401": {
+                        "description": "invalid token"
+                    },
+                    "403": {
+                        "description": "missing token"
+                    },
+                    "500": {
+                        "description": "server error"
+                    }
+                }
+            }
+        }
+    }, 
+    "definitions": {
+        "User" : {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserImageLike" : {
+            "type": "object",
+            "properties": {
+                "hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserImageDislike" : {
+            "type": "object",
+            "properties": {
+                "hash": {
+                    "type": "string"
+                }
+            }
+        },
+        "InvalidResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+
+        }
+    }
+}
